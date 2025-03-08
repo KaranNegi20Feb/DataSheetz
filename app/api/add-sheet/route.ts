@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const { GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID } = process.env;
 
@@ -12,7 +12,7 @@ export async function POST(req) {
     const auth = new google.auth.JWT(
       GOOGLE_SERVICE_ACCOUNT_EMAIL,
       undefined,
-      GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+      GOOGLE_PRIVATE_KEY.replace(/\\n/gm, "\n"),
       ["https://www.googleapis.com/auth/spreadsheets"]
     );
 
@@ -30,7 +30,9 @@ export async function POST(req) {
         requests: [
           {
             addSheet: {
-              properties: { title: sheetName },
+              properties: {
+                title: sheetName,
+              },
             },
           },
         ],
@@ -43,7 +45,9 @@ export async function POST(req) {
       spreadsheetId: GOOGLE_SHEET_ID,
       range,
       valueInputOption: "RAW",
-      requestBody: { values: data },
+      requestBody: {
+        values: data, // 2D array representing the table
+      },
     });
 
     return NextResponse.json({ message: `Sheet "${sheetName}" created and populated successfully` });
