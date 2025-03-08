@@ -19,7 +19,7 @@ export async function GET() {
     const auth = new google.auth.JWT(
       process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       undefined,
-      process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, "\n"), // Fix newline formatting for private key
+      process.env.GOOGLE_PRIVATE_KEY.split(String.raw`\n`).join('\n'), // Fix newline formatting for private key
       ["https://www.googleapis.com/auth/spreadsheets.readonly"]
     );
 
