@@ -9,8 +9,12 @@ interface TableBoxProps {
   sheet: string | null;
 }
 
+interface SheetRow {
+  [key: string]: string | number | boolean | null; // Define expected column types
+}
+
 export default function TableBox({ sheet }: TableBoxProps) {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<SheetRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,11 +29,11 @@ export default function TableBox({ sheet }: TableBoxProps) {
         const res = await fetch(`/api/sheet-data?name=${sheet}`);
         const result = await res.json();
         if (res.ok) {
-          setData(result.data);
+          setData(result.data as SheetRow[]); // Type assertion
         } else {
           setError(result.error || "Failed to load data");
         }
-      } catch{
+      } catch {
         setError("Network error");
       }
 
@@ -41,7 +45,6 @@ export default function TableBox({ sheet }: TableBoxProps) {
 
   return (
     <Card className="p-4 border shadow-none">
-      {/* Sheet Title */}
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold">{sheet || "No Sheet Selected"}</h3>
       </div>
@@ -67,7 +70,7 @@ export default function TableBox({ sheet }: TableBoxProps) {
                 <TableRow key={rowIndex} className="hover:bg-gray-50">
                   {Object.keys(row).map((key) => (
                     <TableCell key={key} className="p-2 border">
-                      {row[key]}
+                      {row[key] as string}
                     </TableCell>
                   ))}
                 </TableRow>

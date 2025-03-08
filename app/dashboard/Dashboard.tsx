@@ -18,8 +18,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import TableBox from "@/app/dashboard/TableBox";
-
 
 export default function Dashboard() {
   const [sheets, setSheets] = useState<string[]>([]);
@@ -29,20 +29,22 @@ export default function Dashboard() {
   const [numCols, setNumCols] = useState(0);
   const [tableData, setTableData] = useState<string[][]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
   const userName = "John Doe";
 
   async function fetchSheets() {
     try {
+      setIsLoading(true); // Start loading state
       const res = await fetch("/api/sheets");
       const data = await res.json();
       if (data.sheets) {
         setSheets(data.sheets);
-        setSelectedSheet(data.sheets[0]); // Select first sheet by default
-        return data.sheets;
+        setSelectedSheet(data.sheets[0]); // Set first sheet after loading
       }
     } catch (error) {
       console.error("Error fetching sheets:", error);
-      return [];
+    } finally {
+      setIsLoading(false); // Stop loading state
     }
   }
 
@@ -69,9 +71,8 @@ export default function Dashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sheetName: newSheetName, data: tableData }),
       });
-  
+
       if (res.ok) {
-        // Update state instead of reloading the page
         setSheets((prevSheets) => [...prevSheets, newSheetName]);
         setSelectedSheet(newSheetName);
         setNewSheetName("");
@@ -87,7 +88,6 @@ export default function Dashboard() {
       console.error("Error adding sheet:", error);
     }
   }
-  
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -96,17 +96,26 @@ export default function Dashboard() {
         <div>
           <h2 className="text-lg font-bold mb-4">DataSheetz</h2>
           <ul>
-            {sheets.map((sheet) => (
-              <li key={sheet} className="mb-2">
-                <Button
-                  variant={selectedSheet === sheet ? "default" : "outline"}
-                  className="w-full"
-                  onClick={() => setSelectedSheet(sheet)}
-                >
-                  {sheet}
-                </Button>
-              </li>
-            ))}
+            {isLoading ? (
+              // Loading skeleton placeholders
+              <div className="space-y-2">
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ) : (
+              sheets.map((sheet) => (
+                <li key={sheet} className="mb-2">
+                  <Button
+                    variant={selectedSheet === sheet ? "default" : "outline"}
+                    className="w-full"
+                    onClick={() => setSelectedSheet(sheet)}
+                  >
+                    {sheet}
+                  </Button>
+                </li>
+              ))
+            )}
           </ul>
         </div>
 
