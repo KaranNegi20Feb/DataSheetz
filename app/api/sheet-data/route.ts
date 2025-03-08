@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
 
-export async function GET(req: Request) {
+export async function GET(req) {
   try {
     const url = new URL(req.url);
     const sheetName = url.searchParams.get("name");
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: `${sheetName}!A1:Z1000`, // Fetch up to 1000 rows
+      range: `${sheetName}!A1:Z1000`,
     });
 
     const rows = response.data.values || [];

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
 
-export async function POST(req: Request) {
+export async function POST(req) {
   try {
     const { GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID } = process.env;
 
@@ -30,9 +30,7 @@ export async function POST(req: Request) {
         requests: [
           {
             addSheet: {
-              properties: {
-                title: sheetName,
-              },
+              properties: { title: sheetName },
             },
           },
         ],
@@ -45,9 +43,7 @@ export async function POST(req: Request) {
       spreadsheetId: GOOGLE_SHEET_ID,
       range,
       valueInputOption: "RAW",
-      requestBody: {
-        values: data, // 2D array representing the table
-      },
+      requestBody: { values: data },
     });
 
     return NextResponse.json({ message: `Sheet "${sheetName}" created and populated successfully` });
