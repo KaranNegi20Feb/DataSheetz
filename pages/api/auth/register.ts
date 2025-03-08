@@ -4,7 +4,17 @@ import jwt from 'jsonwebtoken';
 import UserNew from '../../../models/userModel';
 import connectDB from '../../../lib/dbConnect';
 
-export default async function register(req: NextApiRequest, res: NextApiResponse) {
+interface ErrorResponse {
+  message: string;
+  error?: string;
+}
+
+interface SuccessResponse {
+  message: string;
+  token: string;
+}
+
+export default async function register(req: NextApiRequest, res: NextApiResponse<ErrorResponse | SuccessResponse>) {
     await connectDB();
 
     const { username, password, email } = req.body;
@@ -29,6 +39,6 @@ export default async function register(req: NextApiRequest, res: NextApiResponse
         res.status(201).json({ message: 'User registered successfully', token });
     } catch (error) {
         console.error('Error registering user:', error);
-        res.status(500).json({ message: 'Error registering user', error: error.message });
+        res.status(500).json({ message: 'Error registering user', error: (error as Error).message });
     }
 }

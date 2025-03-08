@@ -5,7 +5,7 @@ import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Label } from "@/app/components/ui/label";
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +13,10 @@ interface SignupFormData {
   username: string;
   email: string;
   password: string;
+}
+
+interface ErrorResponse {
+  message: string;
 }
 
 export default function SignupPage() {
@@ -27,8 +31,9 @@ export default function SignupPage() {
       localStorage.setItem('token', response.data.token);
       router.push('/dashboard'); // Redirect to the dashboard
     } catch (error) {
-      console.error('Error signing up:', error);
-      setErrorMessage(error.response?.data?.message || 'Failed to sign up. Please try again.');
+      const axiosError = error as AxiosError<ErrorResponse>;
+      console.error('Error signing up:', axiosError);
+      setErrorMessage(axiosError.response?.data?.message || 'Failed to sign up. Please try again.');
     }
   };
 
