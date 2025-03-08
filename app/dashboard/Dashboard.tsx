@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from "jwt-decode";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, User, LogOut, Settings } from "lucide-react";
+import { PlusCircle, User, LogOut, Settings, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -213,16 +213,11 @@ export default function Dashboard() {
                 <Avatar>
                   <AvatarFallback>{userName ? userName[0] : 'U'}</AvatarFallback>
                 </Avatar>
+                <ChevronDown size={16} />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <div className="px-4 py-2 text-sm text-gray-700">{userName}</div>
-              <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                <User size={16} /> Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                <Settings size={16} /> Settings
-              </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-red-500" onClick={handleLogout}>
                 <LogOut size={16} /> Log out
               </DropdownMenuItem>
