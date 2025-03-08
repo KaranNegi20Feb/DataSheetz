@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from "jwt-decode";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, User, LogOut, Settings, ChevronDown } from "lucide-react";
+import { PlusCircle, LogOut, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
