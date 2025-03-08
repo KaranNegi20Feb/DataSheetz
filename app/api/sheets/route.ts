@@ -15,11 +15,16 @@ export async function GET() {
       return NextResponse.json({ error: "Missing Google API credentials" }, { status: 500 });
     }
 
+    // Ensure the private key is correctly formatted
+    const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+    console.log("Private key formatted successfully");
+    console.log("Private key:", privateKey);
+
     // Authenticate with Google Sheets API
     const auth = new google.auth.JWT(
       process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       undefined,
-      process.env.GOOGLE_PRIVATE_KEY.split(String.raw`\n`).join('\n'), // Fix newline formatting for private key
+      privateKey, // Use the correctly formatted private key
       ["https://www.googleapis.com/auth/spreadsheets.readonly"]
     );
 
