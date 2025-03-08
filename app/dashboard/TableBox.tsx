@@ -29,7 +29,7 @@ export default function TableBox({ sheet }: TableBoxProps) {
         } else {
           setError(result.error || "Failed to load data");
         }
-      } catch (err) {
+      } catch{
         setError("Network error");
       }
 

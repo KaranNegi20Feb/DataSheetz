@@ -1,18 +1,14 @@
 'use client';
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Label } from "@/app/components/ui/label";
-import { toast } from "sonner";
 
 export default function LoginPage() {
   const {
     register,
-    handleSubmit,
   } = useForm();
-  const [loading, setLoading] = useState(false);
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center">
@@ -42,8 +38,7 @@ export default function LoginPage() {
                 className="mt-1 border-gray-300 focus:border-green-500"
               />
             </div>
-            <Button type="submit" className="w-full mb-5 mt-5 bg-green-500 hover:bg-green-600 text-white font-semibold" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+            <Button type="submit" className="w-full mb-5 mt-5 bg-green-500 hover:bg-green-600 text-white font-semibold">
             </Button>
           </form>
         </CardContent>

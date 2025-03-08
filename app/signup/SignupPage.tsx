@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
@@ -10,9 +9,7 @@ import { Label } from "@/app/components/ui/label";
 export default function SignupPage() {
   const {
     register,
-    handleSubmit,
   } = useForm();
-  const [loading, setLoading] = useState(false);
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center">
@@ -51,8 +48,7 @@ export default function SignupPage() {
                 className="mt-1 border-gray-300 focus:border-blue-500"
               />
             </div>
-            <Button type="submit" className="mt-5 mb-5 w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold" disabled={loading}>
-              {loading ? "Signing up..." : "Sign Up"}
+            <Button type="submit" className="mt-5 mb-5 w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold">
             </Button>
           </form>
         </CardContent>
