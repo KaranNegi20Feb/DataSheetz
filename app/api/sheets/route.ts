@@ -18,7 +18,6 @@ export async function GET() {
     // Ensure the private key is correctly formatted
     const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
     console.log("Private key formatted successfully");
-    console.log("Private key:", privateKey);
 
     // Authenticate with Google Sheets API
     const auth = new google.auth.JWT(

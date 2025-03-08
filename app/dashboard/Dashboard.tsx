@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
+import { jwtDecode } from "jwt-decode";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, User, LogOut, Settings } from "lucide-react";
 import {
@@ -21,7 +23,14 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import TableBox from "@/app/dashboard/TableBox";
 
+interface DecodedToken {
+  id: string;
+  username: string;
+  exp: number;
+}
+
 export default function Dashboard() {
+  const router = useRouter();
   const [sheets, setSheets] = useState<string[]>([]);
   const [selectedSheet, setSelectedSheet] = useState<string | null>(null);
   const [newSheetName, setNewSheetName] = useState("");
@@ -30,7 +39,19 @@ export default function Dashboard() {
   const [tableData, setTableData] = useState<string[][]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
-  const userName = "John Doe";
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login'); // Redirect to login if no token is found
+    } else {
+      const decodedToken: DecodedToken = jwtDecode(token);
+      setUserName(decodedToken.username);
+      console.log("Decoded token:", decodedToken);
+      fetchSheets();
+    }
+  }, [router]);
 
   async function fetchSheets() {
     try {
@@ -47,10 +68,6 @@ export default function Dashboard() {
       setIsLoading(false); // Stop loading state
     }
   }
-
-  useEffect(() => {
-    fetchSheets();
-  }, []);
 
   function generateTable() {
     const rows = Array.from({ length: numRows }, () => Array(numCols).fill(""));
@@ -87,6 +104,11 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error adding sheet:", error);
     }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('token');
+    router.push('/login');
   }
 
   return (
@@ -189,7 +211,7 @@ export default function Dashboard() {
               <button className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
                 <span className="text-sm font-medium">{userName}</span>
                 <Avatar>
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarFallback>{userName ? userName[0] : 'U'}</AvatarFallback>
                 </Avatar>
               </button>
             </DropdownMenuTrigger>
@@ -201,7 +223,7 @@ export default function Dashboard() {
               <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
                 <Settings size={16} /> Settings
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-red-500">
+              <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-red-500" onClick={handleLogout}>
                 <LogOut size={16} /> Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
