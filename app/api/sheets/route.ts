@@ -34,8 +34,8 @@ export async function GET() {
     const sheetNames = metadata.data.sheets?.map((sheet) => sheet.properties?.title) || [];
 
     return NextResponse.json({ sheets: sheetNames }, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching sheets:", error);
-    return NextResponse.json({ error: "Internal Server Error", details: error.message }, { status: 500 });
+  } catch {
+    console.error("Error fetching sheets:");
+    return NextResponse.json({ error: "Internal Server Error"}, { status: 500 });
   }
 }
