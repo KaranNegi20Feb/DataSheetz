@@ -35,6 +35,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+## Live URL
+https://data-sheetz-my-project-karan31.vercel.app/dashboard
 
 ## Some Dummy ID & PASSWORDS:
 
@@ -54,4 +56,35 @@ https://www.youtube.com/watch?v=k_PB4ORz2r0
 
 ## Walkthrough and explanation:
 https://www.loom.com/share/e39a6eb2471f4382acd4ee1f4274423d?sid=29fb3c22-700d-4855-b5b4-eb91b3dc6dae
+
+## Dependencies:
+# Install Next.js, React, and React-DOM
+npm install next react react-dom
+
+# Install Axios
+npm install axios
+
+# Install bcryptjs
+npm install bcryptjs
+
+# Install jsonwebtoken
+npm install jsonwebtoken
+
+# Install mongoose
+npm install mongoose
+
+# Install react-hook-form
+npm install react-hook-form
+
+# Install lucide-react
+npm install lucide-react
+
+# Install react-icons
+npm install react-icons
+
+# Install dotenv
+npm install dotenv
+
+# Shadcn
+https://ui.shadcn.com/
 
